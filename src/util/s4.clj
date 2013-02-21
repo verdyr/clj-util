@@ -16,7 +16,7 @@
     (command m (format "unzip -oq apache-s4-%s-bin.zip && ln -sf apache-s4-%s-bin s4 && echo unzipped" S4_VERSION S4_VERSION) :capture capture)
 	(let [home (.trim (command m "pwd" :capture :string))
 	      zk-ip (:cluster-ip zk)
-		  run-script (format "#!/bin/sh\ncd %s/s4\n./s4 node -zk=%s -c=%s &>>%s/s4/s4.log\n" home zk-ip cluster-name home)]
+		  run-script (format "#!/bin/sh\ncd %s/s4\n./s4 node -zk=%s -c=%s -p=%s &>>%s/s4/s4.log\n" home zk-ip cluster-name param home)]
 		(write-remote-file m run-script "s4/run.sh" :mode 0755)
 		(if (and nodes port)
 			(command m (format "(cd s4; ./s4 newCluster -c=%s -nbTasks=%d -flp=%d -zk=%s:2181)" cluster-name nodes port zk-ip) :capture capture))
