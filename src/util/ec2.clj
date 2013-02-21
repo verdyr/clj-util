@@ -14,7 +14,9 @@
            com.amazonaws.services.ec2.model.Tag))
 
 (defn- ec2 [cred]
-  (AmazonEC2Client. (BasicAWSCredentials. (:access cred) (:secret cred))))
+  (doto (AmazonEC2Client. (BasicAWSCredentials. (:access cred) (:secret cred)))
+                    (.setEndpoint "ec2.eu-west-1.amazonaws.com"))
+)
 
 ;; default to the credentials in the environment. 
 (def ^:dynamic *ec2* (ec2 (aws-credentials)))
@@ -172,23 +174,27 @@
 
 (defn command [m cmd & {:keys [wait capture append] :or {wait 60 capture :console append true}}]
   "Execute a remote command on the specified Machine"
+  (println "executing command at the endpoint ..." cmd)
   (and (= (:state m) "running")
        (ssh/command m cmd :wait wait :capture capture :append append)))
 
 (defn put-file [m src dst & {:keys [mode]}]
   "Puts a file to the remote machine via scp"
+  (println "puts a file to the endpoint ..." put-file)
   (and m
        (= (:state m) "running")
        (ssh/put-file m src dst :wait 300 :mode mode)))
 
 (defn get-file [m src dst]
   "Gets a file from the remote machine via scp"
+  (println "gets a file from the endpoint ..." get-file)
   (and m
        (= (:state m) "running")
        (ssh/get-file m src dst :wait 300)))
 
 (defn write-remote-file [m contents dst & {:keys [wait mode]}]
   "Puts the contents to a file on the remote machine via scp"
+  (println "writing contents to a file at the endpoint ..." contents)
   (and m
        (= (:state m) "running")
        (ssh/write-remote-file m contents dst :wait 300 :mode mode)))
@@ -206,6 +212,7 @@
          (do (Thread/sleep sleep-duration) (recur)))))))
 
 (defn wait-for-pending-ids [ids timeout]
+  (println "waiting for pending IDs for the endpoints ... meanwhile we should keep ssh alive with echo")
   (let [alive (doall (map (fn [id] (if (= :timeout (ec2-wait-while-state id "pending" timeout)) nil id)) ids))]
     (doall (map (fn [id] (if id (if (= :timeout (wait-for-ssh (machine id) :wait timeout)) nil id) nil)) alive))))
 
@@ -213,6 +220,7 @@
 (defn create-cluster [cluster cnt & {:keys [ami type keypair user security count wait blockdev]
                                      :or {ami "ami-aecd60c7" type "t1.micro"
                                           keypair  "ec2keypair" user "ec2-user" security "default" wait 300}}]
+  (println "waiting for instance to be created and ready on its state ...")
   (let [ms (machines cluster)]
     (if (seq ms)
       (throw (Exception. (str "Cluster already exists: " cluster)))
