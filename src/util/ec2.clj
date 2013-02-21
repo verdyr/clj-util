@@ -3,6 +3,7 @@
   (:require [util.ssh :as ssh])
   (:import com.amazonaws.services.ec2.AmazonEC2Client
            com.amazonaws.auth.BasicAWSCredentials
+           com.amazonaws.ClientConfiguration
            com.amazonaws.services.ec2.model.RunInstancesRequest
            com.amazonaws.services.ec2.model.RunInstancesResult
            com.amazonaws.services.ec2.model.DescribeInstancesRequest
@@ -14,8 +15,10 @@
            com.amazonaws.services.ec2.model.Tag))
 
 (defn- ec2 [cred]
-  (doto (AmazonEC2Client. (BasicAWSCredentials. (:access cred) (:secret cred)))
-                    (.setEndpoint "ec2.eu-west-1.amazonaws.com"))
+  (doto (AmazonEC2Client. (BasicAWSCredentials. (:access cred) (:secret cred))
+                          (doto (new com.amazonaws.ClientConfiguration) (.withProxyHost "proxy.address.com") (.withProxyPort 8080))
+        )
+        (.setEndpoint "ec2.eu-west-1.amazonaws.com"))
 )
 
 ;; default to the credentials in the environment. 
