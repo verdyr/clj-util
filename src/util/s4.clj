@@ -11,6 +11,7 @@
 (defn install-s4 [m zk cluster-name & {:keys [capture nodes port] :or {capture S4_LOG}}]
   (when m
     (deploy-supervise m :capture capture) ;;make sure we have supervise deployed already
+    (println "installing Stream processing ...")
     (command m (format "curl -s -o apache-s4-%s-bin.zip http://www.apache.org/dist/incubator/s4/s4-%s/apache-s4-%s-bin.zip && echo downloaded" S4_VERSION S4_VERSION S4_VERSION) :capture capture)
     (command m (format "unzip -oq apache-s4-%s-bin.zip && ln -sf apache-s4-%s-bin s4 && echo unzipped" S4_VERSION S4_VERSION) :capture capture)
 	(let [home (.trim (command m "pwd" :capture :string))
@@ -31,9 +32,10 @@
 			(command node (format "(cd s4; ./s4 status -zk=%s)" zk-connect))))))
 
 (defn deploy-s4-app [cluster-name app]
-	"Fix me!!!")
+	"Scribe, WordCount, NLP, Search applications, LINK TO HDFS/YARN DEPLOYMENT HERE")
 
 (defn run-s4 [cluster-name & {:keys [nodes capture first-port] :or {nodes 2 capture S4_LOG first-port 3000}}]
+  (println "preparing Stream processing service platform ...")
   (let [zk (deploy-zookeeper :capture capture)
 	    zk-address (and zk (:cluster-ip zk))
         s4-nodes (create-cluster cluster-name nodes :type "m1.large")
@@ -46,10 +48,12 @@
   (if (first (machines cluster-name)) true false))
 
 (defn deploy-s4 [cluster-name & {:keys [nodes capture] :or {nodes 2 capture S4_LOG}}]
+  (println "start deployment ...")
   (let [m (first (machines cluster-name))]
     (or m (run-s4 cluster-name :nodes nodes :capture capture))))
 
 (defn stop-s4 [cluster-name & {:keys [and-zookeeper]}]
+  (println "stop cluster ...")
   (destroy-cluster cluster-name)
   (if and-zookeeper
     (destroy-cluster ZK_NAME))
