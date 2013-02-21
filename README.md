@@ -168,6 +168,28 @@ The difference is that for s4, the cluster is dedicated to a logical s4 "cluster
 requires deploying different clusters.
 
 
+By default only "us-east" AWS endpoint is supported. To change it to any other endpoint use standard AWS API tools env setting.
+
+```bash
+export EC2_URL="endpoint_here"
+```
+
+where "endpoint_here" is either of the following
+
+```bash
+| ec2.eu-west-1.amazonaws.com      |
+| ec2.sa-east-1.amazonaws.com      |
+| ec2.us-east-1.amazonaws.com      |
+| ec2.ap-northeast-1.amazonaws.com |
+| ec2.us-west-2.amazonaws.com      |
+| ec2.us-west-1.amazonaws.com      |
+| ec2.ap-southeast-1.amazonaws.com |
+| ec2.ap-southeast-2.amazonaws.com |
+```
+
+In case if the setup is behind the proxy, use "proxy.address.com" in ec2.clj to put the proper address and corrsponding port number.
+
+
 ## License
 
 Copyright (C) 2012 Lee Boynton
