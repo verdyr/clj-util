@@ -187,7 +187,7 @@ where "endpoint_here" is either of the following
 | ec2.ap-southeast-2.amazonaws.com |
 ```
 
-In case if the setup is behind the proxy, use "proxy.address.com" in ec2.clj to put the proper address and corrsponding port number.
+In case if the setup is behind the proxy, use "proxy.address.com" in ec2.clj to put the proper address and corresponding port number.
 
 
 ## License
