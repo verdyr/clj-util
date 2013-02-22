@@ -189,13 +189,13 @@ where "endpoint_here" is either of the following
 
 In case if the setup is behind the proxy, use "proxy.address.com" in ec2.clj to put the proper address and corresponding port number.
 
+
+## License
+
 Original code:
 Lee Boynton
 
 Updates/contribution:
 Sergey Boldyrev
-
-
-## License
 
 Distributed under the Eclipse Public License, the same as Clojure.
