@@ -196,9 +196,9 @@ To deploy S4 app to any newly created cluster in AWS, use the following (case of
 
 (deploy-s4 "my-cluster" :nodes 4 :params "s4.adapter.output.stream" :value "RawStatus" :key "key_name")
 
-(deploy-app-s4 "myApp" :cluster "myCluster")
+(deploy-app-s4 "my-app" :cluster "my-cluster")
 
-(status-s4 "myApp")
+(status-s4 "my-app")
 ```
 
 Code above uses s4 utility package used for cluster deployment. S4 app deployment uses myCluster name as the target. It is possible to give parameters to the cluster now.
