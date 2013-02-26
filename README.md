@@ -189,6 +189,21 @@ where "endpoint_here" is either of the following
 
 In case if the setup is behind the proxy, use "proxy.address.com" in ec2.clj to put the proper address and corresponding port number.
 
+To deploy S4 app to any newly created cluster in AWS, use the following (case of twitter counter)
+
+```clojure
+(use 'util.s4)
+
+(deploy-s4 "my-cluster" :nodes 4 :params "s4.adapter.output.stream" :value "RawStatus" :key "key_name")
+
+(deploy-app-s4 "myApp" :cluster "myCluster")
+
+(status-s4 "myApp")
+```
+
+Code above uses s4 utility package used for cluster deployment. S4 app deployment uses myCluster name as the target. It is possible to give parameters to the cluster now.
+
+
 
 ## License
 
