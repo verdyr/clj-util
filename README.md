@@ -187,7 +187,15 @@ where "endpoint_here" is either of the following
 | ec2.ap-southeast-2.amazonaws.com |
 ```
 
-In case if the setup is behind the proxy, use "proxy.address.com" in ec2.clj to put the proper address and corresponding port number.
+In case if the setup is behind the proxy, use "proxy.address.com" in ec2.clj to put the proper address and corresponding proxy_port number.
+
+```clojure
+(defn- ec2 [cred]
+  (AmazonEC2Client. (BasicAWSCredentials. (:access cred) (:secret cred))
+                    (doto (new com.amazonaws.ClientConfiguration) (.withProxyHost "proxy.address.com") (.withProxyPort proxy_port))
+  )
+)
+```
 
 To deploy S4 app to any newly created cluster in AWS, use the following (case of twitter counter)
 
