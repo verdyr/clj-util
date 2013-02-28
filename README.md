@@ -167,6 +167,7 @@ The same thing works for [S4](http://incubator.apache.org/s4/), now that v0.5 ma
 The difference is that for s4, the cluster is dedicated to a logical s4 "cluster". Different partitioning (and node allocation)
 requires deploying different clusters.
 
+#### AWS, endpoints and S4
 
 By default only "us-east" AWS endpoint is supported. To change it to any other endpoint use standard AWS API tools env setting.
 
@@ -186,6 +187,7 @@ where "endpoint_here" is either of the following
 | ec2.ap-southeast-1.amazonaws.com |
 | ec2.ap-southeast-2.amazonaws.com |
 ```
+#### S4 behind proxy
 
 In case if the setup is behind the proxy, use "proxy.address.com" in ec2.clj to put the proper address and corresponding proxy_port number.
 
@@ -196,6 +198,7 @@ In case if the setup is behind the proxy, use "proxy.address.com" in ec2.clj to 
   )
 )
 ```
+#### S4 apps deployment, parameters passing
 
 To deploy S4 app to any newly created cluster in AWS, use the following (case of twitter counter)
 
